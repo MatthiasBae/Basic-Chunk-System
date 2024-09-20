@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5xfhqwsuh8yn"]
+
+[ext_resource type="Script" path="res://scripts/ObjectTracker.cs" id="1_o1fb5"]
+[ext_resource type="PackedScene" uid="uid://h1tbi4odkkho" path="res://prefabs/chunks/Chunk.tscn" id="4_1l456"]
+[ext_resource type="Script" path="res://scripts/chunks/ChunkController.cs" id="4_5hny0"]
+[ext_resource type="Script" path="res://scripts/chunks/ChunkStore.cs" id="5_yl3o3"]
+
+[node name="Game" type="Node"]
+
+[node name="PlayerController" type="Node" parent="."]
+
+[node name="PlayerTracker" type="Node" parent="PlayerController" node_paths=PackedStringArray("_TrackedObject")]
+script = ExtResource("1_o1fb5")
+_TrackedObject = NodePath("../../WorldController/World/ActorController/PlayerFake")
+
+[node name="WorldController" type="Node" parent="."]
+
+[node name="World" type="Node2D" parent="WorldController"]
+
+[node name="ActorController" type="Node2D" parent="WorldController/World"]
+
+[node name="PlayerFake" type="Node2D" parent="WorldController/World/ActorController"]
+
+[node name="Camera2D" type="Camera2D" parent="WorldController/World/ActorController/PlayerFake"]
+zoom = Vector2(0.05, 0.05)
+
+[node name="ChunkController" type="Node2D" parent="WorldController/World" node_paths=PackedStringArray("ChunkStore")]
+script = ExtResource("4_5hny0")
+ChunkPrefab = ExtResource("4_1l456")
+AreaRadius = 2
+ChunkStore = NodePath("Storage")
+
+[node name="Processors" type="Node" parent="WorldController/World/ChunkController"]
+
+[node name="Storage" type="Node2D" parent="WorldController/World/ChunkController"]
+script = ExtResource("5_yl3o3")
+
+[connection signal="SectorEntered" from="PlayerController/PlayerTracker" to="WorldController/World/ChunkController" method="_OnPlayerTrackerSectorEntered"]
+[connection signal="SectorExited" from="PlayerController/PlayerTracker" to="WorldController/World/ChunkController" method="_OnPlayerTrackerSectorExited"]

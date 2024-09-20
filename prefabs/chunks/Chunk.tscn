@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://h1tbi4odkkho"]
+
+[ext_resource type="Script" path="res://scripts/chunks/Chunk.cs" id="1_x165n"]
+[ext_resource type="Texture2D" uid="uid://cp26krwejrahe" path="res://Chunk.png" id="2_6xi4q"]
+
+[node name="Chunk" type="Node2D"]
+script = ExtResource("1_x165n")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_6xi4q")
